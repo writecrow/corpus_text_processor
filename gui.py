@@ -6,12 +6,16 @@
 #
 # cp Info.plist dist/Corpus\ Text\ Processor.app/Contents/
 # codesign -s "CROW" dist/Corpus\ Text\ Processor.app/
+#
 # mkdir Mac/ && mv dist/Corpus\ Text\ Processor.app Mac/
-# pkgbuild --root Mac --identifier CROW --version 0.12 --install-location
-# /Applications CorpusTextProcessor.pkg --sign "John Fullmer"
+# pkgbuild --root Mac --identifier CROW --version 0.alpha4 --install-location
+# /Applications CorpusTextProcessor-unsigned.pkg --sign "John Fullmer"
+
+# https://simplemdm.com/certificate-sign-macos-packages/
+# productsign --sign "3rd Party Mac Developer Installer: John Fullmer (A57QZ4FF3C)" CorpusTextProcessor-unsigned.pkg CorpusTextProcessor.pkg
 
 # To build for Windows:
-# pyinstaller --onefile -wF gui.py
+# pyinstaller --onefile -wF gui.py --icon=default_icon.ico
 import PySimpleGUIQt as sg
 # Windows can use PySimpleGUI
 import convert_to_plaintext
