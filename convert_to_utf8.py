@@ -10,7 +10,7 @@ import chardet
 import codecs
 import os
 import shutil
-import PySimpleGUIQt as sg
+import PySimpleGUI as sg
 # Windows can use PySimpleGUI
 
 print = sg.EasyPrint

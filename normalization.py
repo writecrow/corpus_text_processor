@@ -9,7 +9,7 @@ import chardet
 import codecs
 import shutil
 import string
-import PySimpleGUIQt as sg
+import PySimpleGUI as sg
 # Windows can use PySimpleGUI
 
 printable = set(string.printable)
