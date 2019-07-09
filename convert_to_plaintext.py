@@ -11,7 +11,7 @@ from pdfminer.layout import LAParams
 from pdfminer.pdfpage import PDFPage
 from six import StringIO
 from parsers import html_parser
-from parsers import pptx_parser
+from parsers import doc_parser
 import PySimpleGUI as sg
 
 
@@ -56,9 +56,10 @@ def convert(original_file, home_directory, file_name, extension):
         elif extension == ".html":
             parser = html_parser.Parser()
             plaintext = parser.extract(original_file)
-        elif extension == ".pptx":
-            parser = pptx_parser.Parser()
-            plaintext = parser.extract(original_file)
+        elif extension == ".doc":
+            parser = doc_parser.Parser()
+            docbytes = parser.extract(original_file)
+            plaintext = docbytes.decode('utf-8')
         output_file = open(output_filename, "w")
         output_file.write(plaintext)
         output_file.close()
