@@ -94,7 +94,7 @@ def normalize(original_file, home_directory, file_name):
                 line = re.sub(r'([,;:])([a-z][a-z]+)', '\g<1> \g<2>', line)
                 line = re.sub(r'([a-z])([A-Z])', '\g<1> \g<2>', line)
                 line = re.sub(r'([\.\?;:])([0-9]+\s+)', '\g<1> \g<2>', line)
-                #line = re.sub(r'\r',' ', line)
+                # line = re.sub(r'\r',' ', line)
                 line = re.sub(r'([a-z])(\n[A-Z])', '\g<1>. \g<2>', line)
                 # flatten diacritics
                 line = re.sub(r'[áàãäâåāăąǎȃȧ]', 'a', line)

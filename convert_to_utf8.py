@@ -69,7 +69,7 @@ def convert(filename, name):
         finally:
             if (detected['encoding'] == 'utf-8'):
                 feedback = name + ":\t\t already encoded in utf-8"
-            elif detected['encoding'] == None:
+            elif detected['encoding'] is None:
                 print(detected)
                 feedback = name + ":\t\t encoding ambiguous" + "(No change)"
             else:
