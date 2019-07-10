@@ -21,11 +21,12 @@
 # Export-PfxCertificate -cert "Cert:\CurrentUser\My\E47982D297DB2BD3A412B3FD3C96094A02F9202F" -FilePath C:\Users\mark\writecrow-cert.pfx -Password $pwd
 # SignTool sign /fd SHA256 /a /f C:\Users\mark\writecrow-cert.pfx /p <PASSWORD> dist\gui.exe
 
-import PySimpleGUI as sg
+import PySimpleGUIQt as sg
 # Windows can use PySimpleGUI
 import convert_to_plaintext
 import convert_to_utf8
 import normalization
+import pdf_clean
 import os
 print = sg.EasyPrint
 
@@ -43,6 +44,8 @@ layout = [
               "Processors", default=False)],
     [sg.Radio("Normalize characters",
               "Processors", default=False)],
+    [sg.Radio("Remove PDF metadata",
+              "Processors", default=False)],
     [sg.Button("Process files", size=(12, 1)), sg.Exit(size=(6, 1))]
 ]
 window = sg.Window('Corpus Text Processor', keep_on_top=False, font=(
@@ -56,6 +59,7 @@ def process_recursive(values):
     # values[2] is Plaintext
     # values[3] is UTF-8 Conversion
     # values[4] is Normalization
+    # values[5] is PDF Clean
     if values[2] is True:
         supported_filetypes = ['.docx', '.pdf', '.html', '.pptx', '.txt']
         print("*** CONVERTING TO PLAINTEXT ***")
@@ -81,6 +85,15 @@ def process_recursive(values):
                 extension = os.path.splitext(name)[1]
                 if extension == ".txt":
                     normalization.normalize(os.path.join(dirpath, name), from_directory, to_directory, name)
+        print("*** COMPLETED ***")
+    if values[5] is True:
+        print("*** REMOVING METADATA ***")
+        for dirpath, dirnames, files in os.walk(from_directory):
+            for name in files:
+                extension = os.path.splitext(name)[1]
+                if extension == ".pdf":
+                    pdf_clean.clean(os.path.join(
+                        dirpath, name), from_directory, to_directory, name)
         print("*** COMPLETED ***")
 
 while True:
