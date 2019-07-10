@@ -10,7 +10,7 @@ import chardet
 import codecs
 import os
 import shutil
-import PySimpleGUIQt as sg
+import PySimpleGUI as sg
 # Windows can use PySimpleGUI
 
 print = sg.EasyPrint
@@ -45,8 +45,13 @@ def decode(filename, encoding_method):
     return {'file': f.read(), 'encoding': 'latin_1'}
 
 
-def convert(filename, name):
-    output_filename = filename
+def convert(filename, home_directory, to_directory, name):
+    filepath = os.path.dirname(filename)
+    relative_directory = os.path.relpath(filepath, home_directory)
+    output_directory = os.path.join(to_directory, relative_directory)
+    output_filename = os.path.join(output_directory, name)
+    if not os.path.exists(output_directory):
+        os.makedirs(output_directory)
     # Open the file so we can guess its encoding.
     rawdata = open(filename, 'rb').read()
     detected = chardet.detect(rawdata)

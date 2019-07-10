@@ -9,7 +9,7 @@ import chardet
 import codecs
 import shutil
 import string
-import PySimpleGUIQt as sg
+import PySimpleGUI as sg
 # Windows can use PySimpleGUI
 
 printable = set(string.printable)
@@ -35,7 +35,7 @@ def get_encoding(argument):
     return switcher.get(argument, False)
 
 
-def normalize(original_file, home_directory, file_name):
+def normalize(original_file, home_directory, to_directory, file_name):
     rawdata = open(original_file, 'rb').read()
     detected = chardet.detect(rawdata)
     encoding_method = get_encoding(detected['encoding'])
@@ -43,10 +43,9 @@ def normalize(original_file, home_directory, file_name):
         encoding_method = 'utf8'
     with codecs.open(original_file, 'r', encoding=encoding_method) as f:
         try:
-            base_directory = os.path.join(home_directory, "normalized")
             filepath = os.path.dirname(original_file)
             relative_directory = os.path.relpath(filepath, home_directory)
-            output_directory = os.path.join(base_directory, relative_directory)
+            output_directory = os.path.join(to_directory, relative_directory)
             output_filename = os.path.join(output_directory, file_name)
             if not os.path.exists(output_directory):
                 os.makedirs(output_directory)
