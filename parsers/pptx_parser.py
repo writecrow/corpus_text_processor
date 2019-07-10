@@ -1,6 +1,9 @@
 import pptx
 
-class Parser():
+from .utils import BaseParser
+
+
+class Parser(BaseParser):
     """Extract text from pptx file using python-pptx
     """
 

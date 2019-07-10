@@ -1,23 +1,13 @@
 #!/usr/bin/env python3
 
-# Note that textract is a dependency, and a patched version is needed:
-# pip install git+https://github.com/StevenMapes/textract
-# An additional dependency is SWIG. This can be added by homebrew on Mac
-# and downloaded for Windows and added to the path variable via
-# SET PATH=%PATH%;c:\Users\mark\swigwin-4.0.0
-# Finally, on Windows, Python build tools are needed:
-# https://wiki.python.org/moin/WindowsCompilers#Microsoft_Visual_C.2B-.2B-
-
 # To build for MacOS:
-# pyinstaller --onefile --windowed --osx-bundle-identifier=CROW
-# -n "Corpus Text Processor" --icon=default_icon.icns gui.py
+# pyinstaller --onefile --windowed --osx-bundle-identifier=CROW -n "Corpus Text Processor" --icon=default_icon.icns CorpusTextProcessor.py
 #
 # cp Info.plist dist/Corpus\ Text\ Processor.app/Contents/
 # codesign -s "CROW" dist/Corpus\ Text\ Processor.app/
 #
 # mkdir Mac/ && mv dist/Corpus\ Text\ Processor.app Mac/
-# pkgbuild --root Mac --identifier CROW --version 0.alpha4 --install-location
-# /Applications CorpusTextProcessor-unsigned.pkg --sign "John Fullmer"
+# pkgbuild --root Mac --identifier CROW --version 0.alpha4 --install-location /Applications CorpusTextProcessor-unsigned.pkg --sign "John Fullmer"
 
 # https://simplemdm.com/certificate-sign-macos-packages/
 # productsign --sign "3rd Party Mac Developer Installer: John Fullmer (A57QZ4FF3C)" CorpusTextProcessor-unsigned.pkg CorpusTextProcessor.pkg
@@ -31,7 +21,7 @@
 # Export-PfxCertificate -cert "Cert:\CurrentUser\My\E47982D297DB2BD3A412B3FD3C96094A02F9202F" -FilePath C:\Users\mark\writecrow-cert.pfx -Password $pwd
 # SignTool sign /fd SHA256 /a /f C:\Users\mark\writecrow-cert.pfx /p <PASSWORD> dist\gui.exe
 
-import PySimpleGUI as sg
+import PySimpleGUIQt as sg
 # Windows can use PySimpleGUI
 import convert_to_plaintext
 import convert_to_utf8
@@ -64,12 +54,12 @@ def process_recursive(values):
     # values[2] is UTF-8 Conversion
     # values[3] is Normalization
     if values[1] is True:
-        supported_filetypes = ['.docx', '.pdf', '.html', '.doc']
+        supported_filetypes = ['.docx', '.pdf', '.html', '.pptx', '.txt']
         print("*** CONVERTING TO PLAINTEXT ***")
         for dirpath, dirnames, files in os.walk(directory):
             for name in files:
                 extension = os.path.splitext(name)[1]
-                if  extension in supported_filetypes:
+                if extension in supported_filetypes:
                     convert_to_plaintext.convert(os.path.join(
                         dirpath, name), directory, name, extension)
         print("*** COMPLETED ***")

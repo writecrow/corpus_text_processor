@@ -5,39 +5,21 @@ import sys
 import os
 import string
 import docx2txt
-from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
-from pdfminer.converter import TextConverter
-from pdfminer.layout import LAParams
-from pdfminer.pdfpage import PDFPage
-from six import StringIO
 from parsers import html_parser
 from parsers import doc_parser
-import PySimpleGUI as sg
+from parsers import docx_parser
+from parsers import pdf_parser
+from parsers import pptx_parser
+from parsers import txt_parser
+import PySimpleGUIQt as sg
+import locale
+os.environ["PYTHONIOENCODING"] = "utf-8"
+myLocale = locale.setlocale(category=locale.LC_ALL, locale="en_US.UTF-8")
 
 
 # Windows can use PySimpleGUI
 printable = set(string.printable)
 
-def extract_from_pdf(path):
-    rsrcmgr = PDFResourceManager()
-    retstr = StringIO()
-    codec = 'utf-8'
-    laparams = LAParams()
-    device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
-    fp = open(path, 'rb')
-    interpreter = PDFPageInterpreter(rsrcmgr, device)
-    password = ""
-    maxpages = 0
-    caching = True
-    pagenos=set()
-    for page in PDFPage.get_pages(fp, pagenos, maxpages=maxpages, password=password,caching=caching, check_extractable=True):
-        interpreter.process_page(page)
-    fp.close()
-    device.close()
-    str = retstr.getvalue()
-    retstr.close()
-
-    return str.replace("\\n","\n")
 
 def convert(original_file, home_directory, file_name, extension):
     try:
@@ -50,18 +32,20 @@ def convert(original_file, home_directory, file_name, extension):
         if not os.path.exists(output_directory):
             os.makedirs(output_directory)
         if extension == ".docx":
-            plaintext = docx2txt.process(original_file)
+            parser = docx_parser.Parser()
+        if extension == ".pptx":
+            parser = pptx_parser.Parser()
         elif extension == ".pdf":
-            plaintext = extract_from_pdf(original_file)
+            parser = pdf_parser.Parser()
         elif extension == ".html":
             parser = html_parser.Parser()
-            plaintext = parser.extract(original_file)
         elif extension == ".doc":
             parser = doc_parser.Parser()
-            docbytes = parser.extract(original_file)
-            plaintext = docbytes.decode('utf-8')
+        elif extension == ".txt":
+            parser = txt_parser.Parser()
+        plaintext = parser.process(original_file, "utf_8")
         output_file = open(output_filename, "w")
-        output_file.write(plaintext)
+        output_file.write(plaintext.decode('utf-8'))
         output_file.close()
         sg.EasyPrint(name_only, ":\t\tplaintext created successfully")
     except:
