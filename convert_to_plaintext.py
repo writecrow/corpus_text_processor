@@ -11,11 +11,10 @@ from parsers import docx_parser
 from parsers import pdf_parser
 from parsers import pptx_parser
 from parsers import txt_parser
-import PySimpleGUIQt as sg
+import PySimpleGUI as sg
 import locale
 os.environ["PYTHONIOENCODING"] = "utf-8"
 myLocale = locale.setlocale(category=locale.LC_ALL, locale="en_US.UTF-8")
-
 
 # Windows can use PySimpleGUI
 printable = set(string.printable)
@@ -45,9 +44,8 @@ def convert(original_file, home_directory, to_directory, file_name, extension):
         elif extension == ".txt":
             parser = txt_parser.Parser()
         plaintext = parser.process(original_file, "utf_8")
-        output_file = open(output_filename, "w")
-        output_file.write(plaintext.decode('utf-8'))
-        output_file.close()
+        with open(output_filename, "w", encoding="utf-8") as f:
+            f.write(plaintext.decode('utf-8'))
         sg.EasyPrint(name_only, ":\t\tplaintext created successfully")
     except:
         sg.EasyPrint(file_name + "\t" + str(sys.exc_info()[0]) + "\t" + str(sys.exc_info()[1]))
