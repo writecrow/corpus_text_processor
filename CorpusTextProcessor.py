@@ -34,6 +34,7 @@ from processors import convert_to_plaintext
 from processors import encode_to_utf8
 from processors import standardize_characters
 from processors import remove_pdf_metadata
+# @todo - re add .doc support with https://stackoverflow.com/a/48832989
 
 # Set the 'print' command to use the GUI.
 print = sg.Print
@@ -46,7 +47,7 @@ layout = [
     [sg.Text('Save files to:', size=(20, 1)),
         sg.InputText("", key='destination'), sg.FolderBrowse(size=(9, 1))],
     [sg.Text('Choose processor:', size=(20, 1))],
-    [sg.Radio("Convert to plaintext (supports .docx, .pdf, .html, .pptx)",
+    [sg.Radio("Convert to plaintext (supports .doc, .docx, .pdf, .html, .pptx)",
               "Processors", key='convertToPlaintext', default=True)],
     [sg.Radio("Encode in UTF-8 (expects .txt files)",
               "Processors", key='encodeUtf8', default=False)],

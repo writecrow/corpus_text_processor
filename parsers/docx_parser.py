@@ -1,5 +1,4 @@
 import docx2txt
-
 from .utils import BaseParser
 
 
