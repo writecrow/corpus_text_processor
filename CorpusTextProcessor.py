@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# pylint: disable=E1101
 
 # To build for MacOS:
 # pyinstaller --onefile --windowed --osx-bundle-identifier=CROW -n "Corpus Text Processor" --icon=default_icon.icns CorpusTextProcessor.py
@@ -88,7 +89,7 @@ def process_recursive(values):
             # Extract the file extension.
             file_parts = os.path.splitext(filename)
             extension = file_parts[1].lower()
-            
+
             # Skip unsupported files.
             if extension not in supported_filetypes:
                 continue
@@ -105,8 +106,7 @@ def process_recursive(values):
                 processor = standardize_characters
             elif values['removeMetadata'] is True:
                 processor = remove_pdf_metadata
-            result = processor.run(
-                        filepath, source, destination, filename, extension)
+            result = processor.run(filepath, source, destination, filename, extension)
             resultList.append(result)
 
             # Update the progress in the GUI.

@@ -11,7 +11,7 @@ print = sg.Print
 
 
 def get_encoding(argument):
-    # In the below dictionary, the key is encoding provided by the `chardet`
+    # In the below dictionary, the key is encoding provided by the `chardet` (see https://github.com/chardet/chardet).
     # module. The value is the encoding to use from the `codecs`
     # module. See
     # https://docs.python.org/3/library/codecs.html#standard-encodings
