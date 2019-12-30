@@ -14,8 +14,8 @@ import sys
 
 
 def run(original_file, source, destination, file_name, extension):
-    if extension != ".txt":
-        return {'name': name, 'result': False, 'message': 'Not a .txt file'}
+    if extension not in ['.html', '.txt', '.xml']:
+        return {'name': file_name, 'result': False, 'message': 'Not a .txt file'}
     rawdata = open(original_file, 'rb').read()
     detected = chardet.detect(rawdata)
     encoding_method = encoding.get_encoding(detected['encoding'])
@@ -113,7 +113,7 @@ def run(original_file, source, destination, file_name, extension):
                 #print(line, file=output_file)
             # be polite and close the file
             output_file.close()
-            return {'name': name, 'result': True, 'message': 'Successfully standardized.'}
+            return {'name': file_name, 'result': True, 'message': 'Successfully standardized.'}
         except:
             message = str(sys.exc_info()[1])
-            return {'name': name, 'result': False, 'message': message}
+            return {'name': file_name, 'result': False, 'message': message}

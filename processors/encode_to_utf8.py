@@ -2,7 +2,7 @@
 
 # DESCRIPTION: Given a text file passed as argument to the script,
 # attempt to guess the character encoding and open each file as such.
-# If that fails, copy the file as-is.
+# If that fails, open the file as `latin_1`.
 # Finally, encode the file in utf8 and place it in an "output" directory
 
 import argparse
@@ -25,7 +25,7 @@ def decode(filename, encoding_method):
 
 
 def run(filename, source, destination, name, extension):
-    if extension != ".txt":
+    if extension not in ['.html', '.txt', '.xml']:
         return {'name': name, 'result': False, 'message': 'Not a .txt file'}
     try:
         filepath = os.path.dirname(filename)

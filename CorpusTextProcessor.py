@@ -49,7 +49,7 @@ layout = [
               "Processors", key='convertToPlaintext', default=True)],
     [sg.Radio("Encode in UTF-8",
               "Processors", key='encodeUtf8', default=False)],
-    [sg.Radio("Standardize unusual characters",
+    [sg.Radio("Standardize unusual characters (also removes non-English characters)",
               "Processors", key='standardizeCharacters', default=False)],
     [sg.Radio("Remove PDF metadata",
               "Processors", key='removeMetadata', default=False)],
