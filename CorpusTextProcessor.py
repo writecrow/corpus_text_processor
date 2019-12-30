@@ -30,10 +30,10 @@ import PySimpleGUIQt as sg
 # Windows can use PySimpleGUI
 
 # The following are the available custom processors.
-import convert_to_plaintext
-import convert_to_utf8
-import normalization
-import pdf_clean
+from processors import convert_to_plaintext
+from processors import encode_to_utf8
+from processors import standardize_characters
+from processors import remove_pdf_metadata
 
 # Set the 'print' command to use the GUI.
 
@@ -73,7 +73,7 @@ def process_recursive(values):
         for filename in files:
             # Extract the file extension.
             file_parts = os.path.splitext(filename)
-            print(file_parts)
+
             # Skip hidden files.
             if (file_parts[1] == ""):
                 continue
@@ -84,19 +84,20 @@ def process_recursive(values):
 
             # Perform the user-selected operation.
             if values['convertToPlaintext'] is True:
-                result = convert_to_plaintext.convert(
+                result = convert_to_plaintext.run(
                     filepath, source, destination, filename, extension)
             if values['encodeUtf8'] is True:
-                result = convert_to_utf8.convert(
+                result = encode_to_utf8.run(
                     filepath, source, destination, filename, extension)
             if values['standardizeCharacters'] is True:
-                result = normalization.normalize(
+                result = standardize_characters.run(
                     filepath, source, destination, filename, extension)
             if values['removeMetadata'] is True:
-                result = pdf_clean.clean(
+                result = remove_pdf_metadata.run(
                     filepath, source, destination, filename, extension)
             resultList.append(result)
             inc = inc + 1
+            # Update the progress in the GUI.
             progress_bar.update_bar((inc)/len(files)*10)
     # Process results for output.
     failed = []
@@ -108,13 +109,14 @@ def process_recursive(values):
             failed.append([i['name'], i['message']])
     print(' ')
     print('**********************************************************')
-    print('***** The following files were successfully processed ****')
+    print('******** The following were successfully processed *******')
     print(tabulate(succeeded, headers=['Filename', 'Message']))
     print(' ')
     print('**********************************************************')
     print(' ')
+    # Print failures, if there are any.
     if (len(failed) > 0):
-        print('** WARNING: The following files failed or were skipped: **')
+        print('***** WARNING: The following failed or were skipped: *****')
         print(tabulate(failed, headers=['Filename', 'Message']))
         print(' ')
     else:

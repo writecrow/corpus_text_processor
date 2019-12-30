@@ -6,3 +6,5 @@ Mac
 CorpusTextProcessor.pkg
 Corpus Text Processor.exe
 .DS_Store
+test_output/*.txt
+test_output/*.pdf
