@@ -12,9 +12,9 @@ from exceptions import UnknownMethod, ShellError
 
 from .utils import ShellParser
 
-class Parser(ShellParser):
 
-    def extract(self, filename, **kwargs):
+class Parser(ShellParser):
+    def extract(self, filename):
         rsrcmgr = PDFResourceManager()
         retstr = StringIO()
         codec = 'utf-8'
@@ -22,11 +22,8 @@ class Parser(ShellParser):
         device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
         fp = open(filename, 'rb')
         interpreter = PDFPageInterpreter(rsrcmgr, device)
-        password = ""
-        maxpages = 0
-        caching = True
         pagenos = set()
-        for page in PDFPage.get_pages(fp, pagenos, maxpages=maxpages, password=password, caching=caching,   check_extractable=True):
+        for page in PDFPage.get_pages(fp, pagenos, maxpages=0, password="", caching=True, check_extractable=True):
             interpreter.process_page(page)
         fp.close()
         device.close()
