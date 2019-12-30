@@ -7,5 +7,5 @@ class Parser(BaseParser):
     """Extract text from docx file using python-docx.
     """
 
-    def extract(self, filename, **kwargs):
+    def extract(self, filename):
         return docx2txt.process(filename)

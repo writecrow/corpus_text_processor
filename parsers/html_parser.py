@@ -124,7 +124,7 @@ class Parser(BaseParser):
                 elem.unwrap()
         return soup
 
-    def extract(self, filename, **kwargs):
+    def extract(self, filename):
         with open(filename, "rb") as stream:
             soup = BeautifulSoup(stream, 'lxml')
 

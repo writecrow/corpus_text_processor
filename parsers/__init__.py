@@ -28,7 +28,7 @@ DEFAULT_ENCODING = 'utf_8'
 _FILENAME_SUFFIX = '_parser'
 
 
-def process(filename, encoding=DEFAULT_ENCODING, extension=None, **kwargs):
+def process(filename, encoding=DEFAULT_ENCODING, extension=None):
     """This is the core function used for extracting text. It routes the
     ``filename`` to the appropriate parser and returns the extracted
     text as a byte-string encoded with ``encoding``.
@@ -74,7 +74,7 @@ def process(filename, encoding=DEFAULT_ENCODING, extension=None, **kwargs):
     # do the extraction
 
     parser = filetype_module.Parser()
-    return parser.process(filename, encoding, **kwargs)
+    return parser.process(filename, encoding)
 
 
 def _get_available_extensions():

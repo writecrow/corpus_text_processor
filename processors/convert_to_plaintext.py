@@ -21,7 +21,7 @@ myLocale = locale.setlocale(category=locale.LC_ALL, locale="en_US.UTF-8")
 def run(original_file, source, destination, file_name, extension):
     supported_filetypes = ['.docx', '.pdf', '.html', '.pptx', '.txt']
     if extension not in supported_filetypes:
-        return {'name': file_name, 'result': False, 'message': 'Unsupported filetype'}
+        return {'name': file_name, 'result': False, 'message': 'Unsupported file type'}
     try:
         filepath = os.path.dirname(original_file)
         relative_directory = os.path.relpath(filepath, source)
@@ -40,8 +40,6 @@ def run(original_file, source, destination, file_name, extension):
             parser = pdf_parser.Parser()
         elif extension == ".html":
             parser = html_parser.Parser()
-        elif extension == ".doc":
-            parser = doc_parser.Parser()
         elif extension == ".txt":
             parser = txt_parser.Parser()
         plaintext = parser.process(original_file, "utf_8")
