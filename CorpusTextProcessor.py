@@ -45,7 +45,7 @@ layout = [
     [sg.Text('Save files to:', size=(20, 1)),
         sg.InputText("", key='destination'), sg.FolderBrowse(size=(9, 1))],
     [sg.Text('Choose processor:', size=(20, 1))],
-    [sg.Radio("Convert to plaintext",
+    [sg.Radio("Convert to plaintext (.docx, .pdf, .html, .pptx)",
               "Processors", key='convertToPlaintext', default=True)],
     [sg.Radio("Encode in UTF-8",
               "Processors", key='encodeUtf8', default=False)],
@@ -55,7 +55,7 @@ layout = [
               "Processors", key='removeMetadata', default=False)],
     [sg.Button("Process files", size=(20, 1)), sg.Exit(size=(6, 1))],
     [sg.ProgressBar(max_value=10, orientation='h', size=(50, 20), key='progress')],
-    [sg.Text('', size=(20, 1), key='progress_text')],
+    [sg.Text('', size=(30, 1), key='progress_text')],
 ]
 window = sg.Window('Corpus Text Processor', keep_on_top=False, font=("Helvetica", 14), default_element_size=(50, 1)).Layout(layout)
 progress_bar = window['progress']
@@ -66,7 +66,7 @@ def process_recursive(values):
     source = values['source']
     destination = values['destination']
     resultList = []
-    supported_filetypes = ['.docx', '.pdf', '.html', '.pptx', '.txt']
+    supported_filetypes = ['.docx', '.pdf', '.html', '.pptx', '.txt', '.doc']
 
     # Reset the progress in the GUI.
     inc = 0
@@ -87,11 +87,11 @@ def process_recursive(values):
         for filename in files:
             # Extract the file extension.
             file_parts = os.path.splitext(filename)
-
-            # Skip hidden files.
-            if (file_parts[1] == ""):
-                continue
             extension = file_parts[1].lower()
+            
+            # Skip unsupported files.
+            if extension not in supported_filetypes:
+                continue
 
             # Get the absolute path to the current file
             filepath = os.path.join(dirpath, filename)
@@ -112,7 +112,7 @@ def process_recursive(values):
             # Update the progress in the GUI.
             inc = inc + 1
             progress_bar.update_bar(inc/total_files*10)
-            # @todo: progress_text.update
+            progress_text.Update(str(inc) + ' of ' + str(total_files))
 
     # Process results for output.
     failed = []

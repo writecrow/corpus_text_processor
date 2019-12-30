@@ -8,7 +8,6 @@ import string
 import sys
 
 from parsers import html_parser
-from parsers import doc_parser
 from parsers import docx_parser
 from parsers import pdf_parser
 from parsers import pptx_parser
