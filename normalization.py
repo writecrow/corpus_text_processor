@@ -29,13 +29,17 @@ def get_encoding(argument):
         'Windows-1254': 'cp1254',
         'UTF-8-SIG': 'utf-8-sig',
         'UTF-16': 'utf-16',
+        'UTF-16BE': 'utf-16',
         'UTF-16LE': 'utf-16',
-        'UTF-32': 'utf_32'
+        'UTF-32': 'utf_32',
+        'UTF-32LE': 'utf_32'
     }
     return switcher.get(argument, False)
 
 
 def normalize(original_file, home_directory, to_directory, file_name):
+    if extension != ".txt":
+        return {'name': name, 'result': False, 'message': 'Not a .txt file'}
     rawdata = open(original_file, 'rb').read()
     detected = chardet.detect(rawdata)
     encoding_method = get_encoding(detected['encoding'])

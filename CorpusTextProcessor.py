@@ -21,18 +21,27 @@
 # Export-PfxCertificate -cert "Cert:\CurrentUser\My\E47982D297DB2BD3A412B3FD3C96094A02F9202F" -FilePath C:\Users\mark\writecrow-cert.pfx -Password $pwd
 # SignTool sign /fd SHA256 /a /f C:\Users\mark\writecrow-cert.pfx /p <PASSWORD> dist\gui.exe
 
+# Base imports
+import os
+from tabulate import tabulate
+from time import sleep
+
 import PySimpleGUIQt as sg
 # Windows can use PySimpleGUI
+
+# The following are the available custom processors.
 import convert_to_plaintext
 import convert_to_utf8
 import normalization
 import pdf_clean
-import os
-print = sg.EasyPrint
 
+# Set the 'print' command to use the GUI.
+
+print = sg.Print
+
+# Define the GUI.
 sg.ChangeLookAndFeel('TealMono')
 layout = [
-    [sg.Text('Corpus Text Processor', size=(30, 1), font=("Verdana", 20))],
     [sg.Text('Process files from:', size=(20, 1)),
         sg.InputText("", key='source'), sg.FolderBrowse(size=(9, 1))],
     [sg.Text('Save files to:', size=(20, 1)),
@@ -46,52 +55,74 @@ layout = [
               "Processors", key='standardizeCharacters', default=False)],
     [sg.Radio("Remove PDF metadata",
               "Processors", key='removeMetadata', default=False)],
-    [sg.Button("Process files", size=(12, 1)), sg.Exit(size=(6, 1))]
+    [sg.Button("Process files", size=(20, 1)), sg.Exit(size=(6, 1))],
+    [sg.ProgressBar(max_value=10, orientation='h', size=(50, 20), key='progress')]
 ]
 window = sg.Window('Corpus Text Processor', keep_on_top=False, font=(
-    "Verdana", 14), default_element_size=(40, 1)).Layout(layout)
-
+    "Helvetica", 14), default_element_size=(50, 1)).Layout(layout)
+progress_bar = window['progress']
 
 def process_recursive(values):
-    # values[0] is the directory to be processed
-    from_directory = values['source']
-    to_directory = values['destination']
-    print(values)
-    if values['convertToPlaintext'] is True:
-        supported_filetypes = ['.docx', '.pdf', '.html', '.pptx', '.txt']
-        print("*** CONVERTING TO PLAINTEXT ***")
-        for dirpath, dirnames, files in os.walk(from_directory):
-            for name in files:
-                extension = os.path.splitext(name)[1]
-                if extension in supported_filetypes:
-                    convert_to_plaintext.convert(os.path.join(
-                        dirpath, name), from_directory, to_directory, name, extension)
-        print("*** COMPLETED ***")
-    if values['encodeUtf8'] is True:
-        print("*** ENCODING IN UTF-8 ***")
-        for dirpath, dirnames, files in os.walk(from_directory):
-            for name in files:
-                extension = os.path.splitext(name)[1]
-                if extension == ".txt":
-                    convert_to_utf8.convert(os.path.join(dirpath, name), from_directory, to_directory, name)
-        print("*** COMPLETED ***")
-    if values['standardizeCharacters'] is True:
-        print("*** STANDARDIZING CHARACTERS ***")
-        for dirpath, dirnames, files in os.walk(from_directory):
-            for name in files:
-                extension = os.path.splitext(name)[1]
-                if extension == ".txt":
-                    normalization.normalize(os.path.join(dirpath, name), from_directory, to_directory, name)
-        print("*** COMPLETED ***")
-    if values['removeMetadata'] is True:
-        print("*** REMOVING METADATA ***")
-        for dirpath, dirnames, files in os.walk(from_directory):
-            for name in files:
-                extension = os.path.splitext(name)[1]
-                if extension == ".pdf":
-                    pdf_clean.clean(os.path.join(
-                        dirpath, name), from_directory, to_directory, name)
-        print("*** COMPLETED ***")
+    source = values['source']
+    destination = values['destination']
+    resultList = []
+
+    # Loop through all files found in the source directory.
+    inc = 0
+    for dirpath, dirnames, files in os.walk(values['source']):
+        for filename in files:
+            # Extract the file extension.
+            file_parts = os.path.splitext(filename)
+            print(file_parts)
+            # Skip hidden files.
+            if (file_parts[1] == ""):
+                continue
+            extension = file_parts[1].lower()
+
+            # Get the absolute path to the current file
+            filepath = os.path.join(dirpath, filename)
+
+            # Perform the user-selected operation.
+            if values['convertToPlaintext'] is True:
+                result = convert_to_plaintext.convert(
+                    filepath, source, destination, filename, extension)
+            if values['encodeUtf8'] is True:
+                result = convert_to_utf8.convert(
+                    filepath, source, destination, filename, extension)
+            if values['standardizeCharacters'] is True:
+                result = normalization.normalize(
+                    filepath, source, destination, filename, extension)
+            if values['removeMetadata'] is True:
+                result = pdf_clean.clean(
+                    filepath, source, destination, filename, extension)
+            resultList.append(result)
+            inc = inc + 1
+            progress_bar.update_bar((inc)/len(files)*10)
+    # Process results for output.
+    failed = []
+    succeeded = []
+    for i in resultList:
+        if i['result'] is True:
+            succeeded.append([i['name'], i['message']])
+        else:
+            failed.append([i['name'], i['message']])
+    print(' ')
+    print('**********************************************************')
+    print('***** The following files were successfully processed ****')
+    print(tabulate(succeeded, headers=['Filename', 'Message']))
+    print(' ')
+    print('**********************************************************')
+    print(' ')
+    if (len(failed) > 0):
+        print('** WARNING: The following files failed or were skipped: **')
+        print(tabulate(failed, headers=['Filename', 'Message']))
+        print(' ')
+    else:
+        print('*********** ALL FILES SUCCESSFULLY PROCESSED! ************')
+    print('**********************************************************')
+    print('Success count: ', len(succeeded))
+    print('Failure/skipped count: ', len(failed))
+    print('**********************************************************')
 
 while True:
     event, values = window.Read()

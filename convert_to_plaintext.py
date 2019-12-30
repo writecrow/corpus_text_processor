@@ -11,16 +11,15 @@ from parsers import docx_parser
 from parsers import pdf_parser
 from parsers import pptx_parser
 from parsers import txt_parser
-import PySimpleGUIQt as sg
 import locale
 os.environ["PYTHONIOENCODING"] = "utf-8"
 myLocale = locale.setlocale(category=locale.LC_ALL, locale="en_US.UTF-8")
 
-# Windows can use PySimpleGUI
-printable = set(string.printable)
-
 
 def convert(original_file, home_directory, to_directory, file_name, extension):
+    supported_filetypes = ['.docx', '.pdf', '.html', '.pptx', '.txt']
+    if extension not in supported_filetypes:
+        return {'name': file_name, 'result': False, 'message': 'Unsupported filetype'}
     try:
         filepath = os.path.dirname(original_file)
         relative_directory = os.path.relpath(filepath, home_directory)
@@ -46,6 +45,7 @@ def convert(original_file, home_directory, to_directory, file_name, extension):
         plaintext = parser.process(original_file, "utf_8")
         with open(output_filename, "w", encoding="utf-8") as f:
             f.write(plaintext.decode('utf-8'))
-        sg.EasyPrint(name_only, ":\t\tplaintext created successfully")
+        return {'name': file_name, 'result': True, 'message': 'Success!'}
     except:
-        sg.EasyPrint(file_name + "\t" + str(sys.exc_info()[0]) + "\t" + str(sys.exc_info()[1]))
+        message = str(sys.exc_info()[1])
+        return {'name': file_name, 'result': False, 'message': message}
