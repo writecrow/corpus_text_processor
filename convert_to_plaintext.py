@@ -11,7 +11,7 @@ from parsers import docx_parser
 from parsers import pdf_parser
 from parsers import pptx_parser
 from parsers import txt_parser
-import PySimpleGUI as sg
+import PySimpleGUIQt as sg
 import locale
 os.environ["PYTHONIOENCODING"] = "utf-8"
 myLocale = locale.setlocale(category=locale.LC_ALL, locale="en_US.UTF-8")

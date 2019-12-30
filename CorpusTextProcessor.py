@@ -34,18 +34,18 @@ sg.ChangeLookAndFeel('TealMono')
 layout = [
     [sg.Text('Corpus Text Processor', size=(30, 1), font=("Verdana", 20))],
     [sg.Text('Process files from:', size=(20, 1)),
-        sg.InputText(""), sg.FolderBrowse(size=(9, 1))],
+        sg.InputText("", key='source'), sg.FolderBrowse(size=(9, 1))],
     [sg.Text('Save files to:', size=(20, 1)),
-        sg.InputText(""), sg.FolderBrowse(size=(9, 1))],
+        sg.InputText("", key='destination'), sg.FolderBrowse(size=(9, 1))],
     [sg.Text('Choose processor:', size=(20, 1))],
     [sg.Radio("Convert to plaintext",
-              "Processors", default=False)],
-    [sg.Radio("Standardize to UTF-8 encoding",
-              "Processors", default=False)],
-    [sg.Radio("Normalize characters",
-              "Processors", default=False)],
+              "Processors", key='convertToPlaintext', default=True)],
+    [sg.Radio("Encode in UTF-8",
+              "Processors", key='encodeUtf8', default=False)],
+    [sg.Radio("Standardize unusual characters",
+              "Processors", key='standardizeCharacters', default=False)],
     [sg.Radio("Remove PDF metadata",
-              "Processors", default=False)],
+              "Processors", key='removeMetadata', default=False)],
     [sg.Button("Process files", size=(12, 1)), sg.Exit(size=(6, 1))]
 ]
 window = sg.Window('Corpus Text Processor', keep_on_top=False, font=(
@@ -54,13 +54,10 @@ window = sg.Window('Corpus Text Processor', keep_on_top=False, font=(
 
 def process_recursive(values):
     # values[0] is the directory to be processed
-    from_directory = values[0]
-    to_directory = values[1]
-    # values[2] is Plaintext
-    # values[3] is UTF-8 Conversion
-    # values[4] is Normalization
-    # values[5] is PDF Clean
-    if values[2] is True:
+    from_directory = values['source']
+    to_directory = values['destination']
+    print(values)
+    if values['convertToPlaintext'] is True:
         supported_filetypes = ['.docx', '.pdf', '.html', '.pptx', '.txt']
         print("*** CONVERTING TO PLAINTEXT ***")
         for dirpath, dirnames, files in os.walk(from_directory):
@@ -70,23 +67,23 @@ def process_recursive(values):
                     convert_to_plaintext.convert(os.path.join(
                         dirpath, name), from_directory, to_directory, name, extension)
         print("*** COMPLETED ***")
-    if values[3] is True:
-        print("*** CONVERTING TO UTF-8 ***")
+    if values['encodeUtf8'] is True:
+        print("*** ENCODING IN UTF-8 ***")
         for dirpath, dirnames, files in os.walk(from_directory):
             for name in files:
                 extension = os.path.splitext(name)[1]
                 if extension == ".txt":
                     convert_to_utf8.convert(os.path.join(dirpath, name), from_directory, to_directory, name)
         print("*** COMPLETED ***")
-    if values[4] is True:
-        print("*** NORMALIZING CHARACTERS ***")
+    if values['standardizeCharacters'] is True:
+        print("*** STANDARDIZING CHARACTERS ***")
         for dirpath, dirnames, files in os.walk(from_directory):
             for name in files:
                 extension = os.path.splitext(name)[1]
                 if extension == ".txt":
                     normalization.normalize(os.path.join(dirpath, name), from_directory, to_directory, name)
         print("*** COMPLETED ***")
-    if values[5] is True:
+    if values['removeMetadata'] is True:
         print("*** REMOVING METADATA ***")
         for dirpath, dirnames, files in os.walk(from_directory):
             for name in files:
@@ -100,7 +97,7 @@ while True:
     event, values = window.Read()
     if event is None or event == 'Exit':
         break
-    elif event == "Process files" and values[0] is not None and os.path.isdir(values[0]) and values[1] is not None and os.path.isdir(values[1]):
+    elif event == "Process files" and values['source'] is not None and os.path.isdir(values['source']) and values['destination'] is not None and os.path.isdir(values['destination']):
         process_recursive(values)
     else:
         print("You need to provide a valid folder")

@@ -2,5 +2,7 @@
 install_requires=[
    'https://github.com/goulu/pdfminer/zipball/e6ad15af79a26c31f4e384d8427b375c93b03533#egg=pdfminer.six',
    'python-pptx==0.6.6',
-   'antiword'
+   'antiword',
+   'PySimpleGUI'
+   'PySide2'
 ]
