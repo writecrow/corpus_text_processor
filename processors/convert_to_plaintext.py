@@ -15,9 +15,6 @@ from parsers import pdf_parser
 from parsers import pptx_parser
 from parsers import txt_parser
 
-import PySimpleGUIQt as sg
-# Windows can use PySimpleGUI
-print = sg.Print
 
 os.environ["PYTHONIOENCODING"] = "utf-8"
 myLocale = locale.setlocale(category=locale.LC_ALL, locale="en_US.UTF-8")

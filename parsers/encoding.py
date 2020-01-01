@@ -6,9 +6,6 @@ import codecs
 import shutil
 import string
 
-import PySimpleGUIQt as sg
-print = sg.Print
-
 
 def get_encoding(argument):
     # In the below dictionary, the key is encoding provided by the `chardet` (see https://github.com/chardet/chardet).

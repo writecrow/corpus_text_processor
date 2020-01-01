@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['CorpusTextProcessor.py'],
-             pathex=['C:\\Users\\mark\\corpus_text_processor'],
+             pathex=['C:\\Users\\mark\\Desktop\\corpus_text_processor'],
              binaries=[],
              datas=[],
              hiddenimports=[],
@@ -27,7 +27,7 @@ exe = EXE(pyz,
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
-          upx=True,
+          upx=False,
           upx_exclude=[],
           runtime_tmpdir=None,
           console=False , icon='default_icon.ico')

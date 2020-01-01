@@ -14,7 +14,7 @@
 # productsign --sign "3rd Party Mac Developer Installer: John Fullmer (A57QZ4FF3C)" CorpusTextProcessor-unsigned.pkg CorpusTextProcessor.pkg
 
 # To build for Windows:
-# pyinstaller --onefile -wF CorpusTextProcessor.py --icon=default_icon.ico --manifest AppxManifest.xml
+# rm -r build; rm -r dist; pyinstaller --onefile -wF --noupx CorpusTextProcessor.py --icon=default_icon.ico --manifest AppxManifest.xml
 #
 # https://docs.microsoft.com/en-us/windows/uwp/packaging/create-certificate-package-signing
 # New-SelfSignedCertificate -Type Custom -Subject "CN=WriteCrow, O=WriteCrow, C=US" -KeyUsage DigitalSignature -FriendlyName "Crow, the corpus & repository of writing" -CertStoreLocation "Cert:\CurrentUser\My" -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.3", "2.5.29.19={text}")
@@ -26,7 +26,7 @@
 import os
 from tabulate import tabulate
 
-import PySimpleGUIQt as sg
+import PySimpleGUI as sg
 # Windows can use PySimpleGUI
 
 # The following are the available custom processors.
