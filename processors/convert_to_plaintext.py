@@ -17,7 +17,7 @@ from parsers import txt_parser
 
 
 os.environ["PYTHONIOENCODING"] = "utf-8"
-myLocale = locale.setlocale(category=locale.LC_ALL, locale="en_US.UTF-8")
+myLocale = locale.setlocale(category=locale.LC_ALL, locale="")
 
 
 def run(original_file, source, destination, file_name, extension):
