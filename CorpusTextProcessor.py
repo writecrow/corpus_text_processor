@@ -5,7 +5,7 @@
 import os
 from tabulate import tabulate
 
-import PySimpleGUI as sg
+import PySimpleGUIQt as sg
 # Windows can use PySimpleGUI
 
 # The following are the available custom processors.
@@ -13,7 +13,6 @@ from processors import convert_to_plaintext
 from processors import encode_to_utf8
 from processors import standardize_characters
 from processors import remove_pdf_metadata
-# @todo - re add .doc support with https://stackoverflow.com/a/48832989
 
 # Set the 'print' command to use the GUI.
 print = sg.Print
@@ -26,21 +25,23 @@ layout = [
     [sg.Text('Save files to:', size=(20, 1)),
         sg.InputText("", key='destination'), sg.FolderBrowse(size=(9, 1))],
     [sg.Text('Choose processor:', size=(20, 1))],
-    [sg.Radio("Convert to plaintext (supports .doc, .docx, .pdf, .html, .pptx)",
+    [sg.Radio("Convert to plaintext (supports .docx, .pdf, .html, .pptx)",
               "Processors", key='convertToPlaintext', default=True)],
     [sg.Radio("Encode in UTF-8 (expects .txt files)",
               "Processors", key='encodeUtf8', default=False)],
-    [sg.Radio("Standardize unusual characters and remove non-English characters",
+    [sg.Radio("Standardize non-ASCII characters and remove non-English characters (expects UTF-8 encoded input)",
               "Processors", key='standardizeCharacters', default=False)],
-    [sg.Radio("Remove PDF metadata (e.g., authoring information)",
+    [sg.Radio("Remove PDF metadata (i.e., authoring information). Expects .pdf files.",
               "Processors", key='removeMetadata', default=False)],
     [sg.Button("Process files", size=(20, 1)), sg.Exit(size=(6, 1))],
-    [sg.ProgressBar(max_value=10, orientation='h', size=(50, 20), key='progress')],
-    [sg.Text('', size=(30, 1), key='progress_text')],
+    [sg.ProgressBar(max_value=10, orientation='h', size=(80, 20), key='progress')],
+    [sg.Text('', size=(80, 1), key='result_text')],
+    [sg.Text('', size=(80, 1), key='progress_text')],
 ]
 window = sg.Window('Corpus Text Processor', keep_on_top=False, font=("Helvetica", 14), default_element_size=(50, 1)).Layout(layout)
 progress_bar = window['progress']
 progress_text = window['progress_text']
+result_text = window['result_text']
 
 
 def process_recursive(values):
@@ -92,7 +93,8 @@ def process_recursive(values):
             # Update the progress in the GUI.
             inc = inc + 1
             progress_bar.update_bar(inc/total_files*10)
-            progress_text.Update(str(inc) + ' of ' + str(total_files))
+            progress_text.Update('Processing ' + filename + ' : ' + result['message'])
+            result_text.Update(str(inc) + ' of ' + str(total_files))
 
     # Process results for output.
     failed = []
