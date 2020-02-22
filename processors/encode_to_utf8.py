@@ -44,6 +44,8 @@ def run(filename, source, destination, name, extension):
             out.write(u['file'])
             out.close()
             feedback = "Converted from " + u['encoding']
+            if u['encoding'] == 'ascii':
+                feedback = "Already encoded in utf-8"
         else:
             try:
                 shutil.copy(filename, output_filename)
