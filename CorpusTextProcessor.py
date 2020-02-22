@@ -20,12 +20,12 @@ print = sg.Print
 # Define the GUI.
 sg.ChangeLookAndFeel('TealMono')
 layout = [
-    [sg.Text('Process files from:', size=(20, 1)),
+    [sg.Text('Select folder to process:', size=(20, 1)),
         sg.InputText("", key='source'), sg.FolderBrowse(size=(9, 1))],
     [sg.Text('Save files to:', size=(20, 1)),
         sg.InputText("", key='destination'), sg.FolderBrowse(size=(9, 1))],
     [sg.Text('Choose processor:', size=(20, 1))],
-    [sg.Radio("Convert to plaintext (supports .docx, .pdf, .html, .pptx)",
+    [sg.Radio("Convert to plaintext (supports .docx, .pdf, .html, .pptx, .rtf)",
               "Processors", key='convertToPlaintext', default=True)],
     [sg.Radio("Encode in UTF-8 (expects .txt files)",
               "Processors", key='encodeUtf8', default=False)],
@@ -48,7 +48,7 @@ def process_recursive(values):
     source = values['source']
     destination = values['destination']
     resultList = []
-    supported_filetypes = ['.docx', '.pdf', '.html', '.pptx', '.txt', '.doc']
+    supported_filetypes = ['.docx', '.pdf', '.html', '.pptx', '.txt', '.rtf', '.doc']
 
     # Reset the progress in the GUI.
     inc = 0
