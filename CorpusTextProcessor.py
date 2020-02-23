@@ -20,12 +20,12 @@ print = sg.Print
 # Define the GUI.
 sg.ChangeLookAndFeel('TealMono')
 layout = [
-    [sg.Text('Select folder to process:', size=(20, 1)),
+    [sg.Text('Select folder to process:', size=(22, 1)),
         sg.InputText("", key='source'), sg.FolderBrowse(size=(9, 1))],
-    [sg.Text('Save files to:', size=(20, 1)),
+    [sg.Text('Save files to:', size=(25, 1)),
         sg.InputText("", key='destination'), sg.FolderBrowse(size=(9, 1))],
     [sg.Text('Choose processor:', size=(20, 1))],
-    [sg.Radio("Convert to plaintext (supports .docx, .pdf, .html, .pptx, .rtf)",
+    [sg.Radio("Convert to plaintext (supports .docx, .html, .pdf, .pptx, .rtf)",
               "Processors", key='convertToPlaintext', default=True)],
     [sg.Radio("Encode in UTF-8 (expects .txt files)",
               "Processors", key='encodeUtf8', default=False)],

@@ -27,24 +27,6 @@ See also: https://simplemdm.com/certificate-sign-macos-packages/
 productsign --sign "3rd Party Mac Developer Installer: John Fullmer (A57QZ4FF3C)" CorpusTextProcessor-unsigned.pkg CorpusTextProcessor.pkg
 ```
 
-# To build for Windows:
-
-pyinstaller --onefile -wF CorpusTextProcessor.py --icon=default_icon.ico --manifest AppxManifest.xml
-
-See also:
-- https://docs.microsoft.com/en-us/windows/uwp/packaging/create-certificate-package-signing
-
-```
-New-SelfSignedCertificate -Type Custom -Subject "CN=WriteCrow, O=WriteCrow, C=US" -KeyUsage DigitalSignature -FriendlyName "Crow, the corpus & repository of writing" -CertStoreLocation "Cert:\CurrentUser\My" -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.3", "2.5.29.19={text}")
-```
-
-$pwd = ConvertTo-SecureString -String <PASSWORD> -Force -AsPlainText
-
-Export-PfxCertificate -cert "Cert:\CurrentUser\My\E47982D297DB2BD3A412B3FD3C96094A02F9202F" -FilePath C:\Users\mark\writecrow-cert.pfx -Password $pwd
-
-SignTool sign /fd SHA256 /a /f C:\Users\mark\writecrow-cert.pfx /p <PASSWORD> dist\gui.exe
-
-
 ## To build for Windows
 
 ```
