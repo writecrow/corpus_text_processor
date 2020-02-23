@@ -6,7 +6,6 @@ import os
 from tabulate import tabulate
 
 import PySimpleGUIQt as sg
-# Windows can use PySimpleGUI
 
 # The following are the available custom processors.
 from processors import convert_to_plaintext
