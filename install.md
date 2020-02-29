@@ -13,12 +13,17 @@ rm -rf build/ dist/ && pyinstaller --onefile --windowed --noupx --osx-bundle-ide
 
 4. Code sign the app:
 ```
-codesign -s "CROW" dist/Corpus\ Text\ Processor.app/
+codesign -s "John Mark Fullmer" dist/Corpus\ Text\ Processor.app/
+```
+
+5. Verify the code signature
+```
+codesign -v dist/Corpus\ Text\ Processor.app/
 ```
 
 5. Build the .pkg
 ```
-rm -rf Mac/ && mkdir Mac/ && mv dist/Corpus\ Text\ Processor.app Mac/ && pkgbuild --root Mac --identifier CROW --version 1.0.beta2 --install-location /Applications MAC_CorpusTextProcessor.pkg --sign "John Fullmer" && rm -rf build/ dist/ Mac/
+rm -rf Mac/ && mkdir Mac/ && mv dist/Corpus\ Text\ Processor.app Mac/ && pkgbuild --root Mac --identifier CROW --version 1.0.beta3 --install-location /Applications MAC_CorpusTextProcessor.pkg --sign "John Fullmer" && rm -rf build/ dist/ Mac/
 ```
 
 6. Code sign the package
