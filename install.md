@@ -8,29 +8,38 @@ See https://pythonhosted.org/PyInstaller/spec-files.html#spec-file-options-for-a
 
 3. Initial build:
 ```
-rm -rf build/ dist/ && pyinstaller --onefile --windowed --noupx --osx-bundle-identifier=CROW -n "Corpus Text Processor" --icon=default_icon.icns CorpusTextProcessor.py && cp Info.plist dist/Corpus\ Text\ Processor.app/Contents/
+rm -rf build/ dist/ && pyinstaller --onefile --windowed --noupx --osx-bundle-identifier=org.writecrow.corpustextprocessor -n "Corpus Text Processor" --icon=default_icon.icns CorpusTextProcessor.py && cp Info.plist dist/Corpus\ Text\ Processor.app/Contents/
 ```
 
-4. Code sign the app:
+4. Code sign the app (see https://github.com/pyinstaller/pyinstaller/issues/4629)
 ```
-codesign -s "John Mark Fullmer" dist/Corpus\ Text\ Processor.app/
+codesign --deep -vvv -s "Developer ID Application: John Fullmer" --entitlements entitlements.plist -o runtime dist/Corpus\ Text\ Processor.app/ --timestamp
+
 ```
 
-5. Verify the code signature
+5. Verify the code signature (empty output = okay)
 ```
 codesign -v dist/Corpus\ Text\ Processor.app/
 ```
 
 5. Build the .pkg
 ```
-rm -rf Mac/ && mkdir Mac/ && mv dist/Corpus\ Text\ Processor.app Mac/ && pkgbuild --root Mac --identifier CROW --version 1.0.beta3 --install-location /Applications MAC_CorpusTextProcessor.pkg --sign "John Fullmer" && rm -rf build/ dist/ Mac/
+rm -rf Mac/ && mkdir Mac/ && mv dist/Corpus\ Text\ Processor.app Mac/ && pkgbuild --root Mac --identifier "org.writecrow.corpustextprocessor" --version 1.0.beta3 --install-location /Applications CorpusTextProcessor.pkg && rm -rf build/ dist/ Mac/
 ```
 
-6. Code sign the package
-See also: https://simplemdm.com/certificate-sign-macos-packages/
+6. Code sign the package (see https://simplemdm.com/certificate-sign-macos-packages/)
 ```
-productsign --sign "3rd Party Mac Developer Installer: John Fullmer (A57QZ4FF3C)" CorpusTextProcessor-unsigned.pkg CorpusTextProcessor.pkg
+productsign --sign "Developer ID Installer: John Fullmer" CorpusTextProcessor.pkg MAC_CorpusTextProcessor.pkg
 ```
+
+7. Notarize the .pkg
+xcrun altool --notarize-app --primary-bundle-id "org.writecrow.corpustextprocessor" --username "mfullmer@gmail.com" --password "" --file MAC_CorpusTextProcessor.pkg
+
+8. Check notarization
+xcrun altool --notarization-history 0 --username "mfullmer@gmail.com" --password ""
+
+9. Get failed notification debug URL:
+xcrun altool --notarization-info NNN -u "mfullmer@gmail.com"
 
 ## To build for Windows
 
