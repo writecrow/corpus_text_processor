@@ -43,17 +43,14 @@ xcrun altool --notarization-info NNN -u "mfullmer@gmail.com"
 
 ## To build for Windows
 
+0. Set the GUI to PySimpleGUI instead of PySimpleGUIQt in CorpusTextProcessor.py
+(This GUI is lighter weight; the latter is required only for correct display on MacOS)
+
+1. Build the executable
+
 ```
-rm -r build; rm -r dist; pyinstaller --onefile -wF --noconsole CorpusTextProcessor.py --icon=default_icon.ico
+rm -r build; rm -r dist; pyinstaller --onefile -wF --noconsole CorpusTextProcessor.py --icon=default_icon.ico --log-level=WARN
 ```
 
-See https://docs.microsoft.com/en-us/windows/uwp/packaging/create-certificate-package-signing
-
-```
-New-SelfSignedCertificate -Type Custom -Subject "CN=WriteCrow, O=WriteCrow, C=US" -KeyUsage DigitalSignature -FriendlyName "Crow, the corpus & repository of writing" -CertStoreLocation "Cert:\CurrentUser\My" -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.3", "2.5.29.19={text}")
-
-$pwd = ConvertTo-SecureString -String <PASSWORD> -Force -AsPlainText
-Export-PfxCertificate -cert "Cert:\CurrentUser\My\E47982D297DB2BD3A412B3FD3C96094A02F9202F" -FilePath C:\Users\mark\writecrow-cert.pfx -Password $pwd
-
-SignTool sign /fd SHA256 /a /f C:\Users\mark\writecrow-cert.pfx /p <PASSWORD> dist\gui.exe
-```
+2. Sign the executable
+We currently use a certificate purchased through DigiCert. The certificate is owned by John Mark Fullmer, and must be shared by that account if another computer is to be used for digital signing. Once the certificate is installed on a computer, you can then easily sign the executable using DigiCert's own [DigiCertUtil application](https://www.digicert.com/util/).
