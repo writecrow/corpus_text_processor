@@ -51,17 +51,21 @@ def process_recursive(values):
 
     # Reset the progress in the GUI.
     inc = 0
-    total_files = 0
+    processable_files = 0
     progress_bar.update_bar(inc)
+    skipped_files = []
 
     # Calculate the number of files to be processed.
     for dirpath, dirnames, files in os.walk(values['source']):
         for filename in files:
             file_parts = os.path.splitext(filename)
             extension = file_parts[1].lower()
-            # Only count supported filetypes.
+            # Count supported filetypes.
             if extension in supported_filetypes:
-                total_files = total_files + 1
+                processable_files = processable_files + 1
+            else:
+                # Create a list of skipped files
+                skipped_files.append(filename)
 
     # Loop through all files found in the source directory.
     for dirpath, dirnames, files in os.walk(values['source']):
@@ -91,9 +95,9 @@ def process_recursive(values):
 
             # Update the progress in the GUI.
             inc = inc + 1
-            progress_bar.update_bar(inc/total_files*10)
+            progress_bar.update_bar(inc/processable_files*10)
             progress_text.Update('Processing ' + filename + ' : ' + result['message'])
-            result_text.Update(str(inc) + ' of ' + str(total_files))
+            result_text.Update(str(inc) + ' of ' + str(processable_files))
 
     # Process results for output.
     failed = []
@@ -111,6 +115,11 @@ def process_recursive(values):
     print(' ')
     print('**********************************************************')
     print(' ')
+    if len(skipped_files) > 0:
+        print('***** The following file(s) were ineligible for processing: *****')
+        for skipped_file in skipped_files:
+            print(skipped_file)
+        print(' ')
     # Print failures, if present.
     if (len(failed) > 0):
         print('***** WARNING: The following failed or were skipped: *****')
@@ -120,7 +129,7 @@ def process_recursive(values):
         print('*********** ALL FILES SUCCESSFULLY PROCESSED! ************')
     print('**********************************************************')
     print('Success count: ', len(succeeded))
-    print('Failure/skipped count: ', len(failed))
+    print('Failure/skipped count: ', len(failed) + len(skipped_files))
     print('**********************************************************')
 
 

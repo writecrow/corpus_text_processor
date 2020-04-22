@@ -22,9 +22,9 @@ codesign --deep -vvv -s "Developer ID Application: John Fullmer" --entitlements 
 codesign -v dist/Corpus\ Text\ Processor.app/
 ```
 
-5. Build the .pkg
+5. Build the .pkg (change version below!)
 ```
-rm -rf Mac/ && mkdir Mac/ && mv dist/Corpus\ Text\ Processor.app Mac/ && pkgbuild --root Mac --identifier "org.writecrow.corpustextprocessor" --version 1.0.beta3 --install-location /Applications CorpusTextProcessor.pkg && rm -rf build/ dist/ Mac/
+rm -rf Mac/ && mkdir Mac/ && mv dist/Corpus\ Text\ Processor.app Mac/ && pkgbuild --root Mac --identifier "org.writecrow.corpustextprocessor" --version 1.0.1 --install-location /Applications CorpusTextProcessor.pkg && rm -rf build/ dist/ Mac/
 ```
 
 6. Code sign the package (see https://simplemdm.com/certificate-sign-macos-packages/)
@@ -32,7 +32,7 @@ rm -rf Mac/ && mkdir Mac/ && mv dist/Corpus\ Text\ Processor.app Mac/ && pkgbuil
 productsign --sign "Developer ID Installer: John Fullmer" CorpusTextProcessor.pkg MAC_CorpusTextProcessor.pkg
 ```
 
-7. Notarize the .pkg
+7. Notarize the .pkg (password is app-specific, at https://appleid.apple.com/account/manage)
 xcrun altool --notarize-app --primary-bundle-id "org.writecrow.corpustextprocessor" --username "mfullmer@gmail.com" --password "" --file MAC_CorpusTextProcessor.pkg
 
 8. Check notarization
