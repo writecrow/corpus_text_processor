@@ -5,7 +5,7 @@ pdf2image==1.9.0
 pdfminer.six==20181108
 PyPDF3==1.0.1
 PySimpleGUIQt==0.28.0
-#PySimpleGUI==4.14.1
+PySimpleGUI==4.38.0
 python-pptx==0.6.18
 pywin32==227
 pywin32-ctypes==0.2.0
