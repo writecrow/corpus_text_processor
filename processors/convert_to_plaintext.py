@@ -8,7 +8,7 @@ import string
 import sys
 
 from parsers import docx_parser
-from parsers import pdf_parser
+from parsers import pdf2word_parser
 from parsers import html_parser
 from parsers import pptx_parser
 from parsers import rtf_parser
@@ -38,7 +38,7 @@ def run(original_file, source, destination, file_name, extension):
         if extension == ".pptx":
             parser = pptx_parser.Parser()
         elif extension == ".pdf":
-            parser = pdf_parser.Parser()
+            parser = pdf2word_parser.Parser()
         elif extension == ".html":
             parser = html_parser.Parser()
         elif extension == ".txt":
