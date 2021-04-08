@@ -8,7 +8,7 @@ See https://pythonhosted.org/PyInstaller/spec-files.html#spec-file-options-for-a
 
 3. Initial build:
 ```
-rm -rf build/ dist/ && pyinstaller --onefile --windowed --noupx --osx-bundle-identifier=org.writecrow.corpustextprocessor -n "Corpus Text Processor" --icon=default_icon.icns CorpusTextProcessor.py && cp Info.plist dist/Corpus\ Text\ Processor.app/Contents/
+rm -rf build/ dist/ && pyinstaller --onefile --windowed --noupx --osx-bundle-identifier=org.writecrow.corpustextprocessor -n "Corpus Text Processor" --icon=crow.icns CorpusTextProcessor.py && cp Info.plist dist/Corpus\ Text\ Processor.app/Contents/
 ```
 
 4. Code sign the app (see https://github.com/pyinstaller/pyinstaller/issues/4629)
@@ -24,7 +24,7 @@ codesign -v dist/Corpus\ Text\ Processor.app/
 
 5. Build the .pkg (change version below!)
 ```
-rm -rf Mac/ && mkdir Mac/ && mv dist/Corpus\ Text\ Processor.app Mac/ && pkgbuild --root Mac --identifier "org.writecrow.corpustextprocessor" --version 1.0.1 --install-location /Applications CorpusTextProcessor.pkg && rm -rf build/ dist/ Mac/
+rm -rf Mac/ && mkdir Mac/ && mv dist/Corpus\ Text\ Processor.app Mac/ && pkgbuild --root Mac --identifier "org.writecrow.corpustextprocessor" --version 1.0.3 --install-location /Applications CorpusTextProcessor.pkg && rm -rf build/ dist/ Mac/
 ```
 
 6. Code sign the package (see https://simplemdm.com/certificate-sign-macos-packages/)
@@ -32,7 +32,7 @@ rm -rf Mac/ && mkdir Mac/ && mv dist/Corpus\ Text\ Processor.app Mac/ && pkgbuil
 productsign --sign "Developer ID Installer: John Fullmer" CorpusTextProcessor.pkg MAC_CorpusTextProcessor.pkg
 ```
 
-7. Notarize the .pkg (password is app-specific, at https://appleid.apple.com/account/manage)
+7. Notarize the .pkg (password is app-specific, at https://appleid.apple.com/account/manage; if there is a 1048 error, see https://developer.apple.com/forums/thread/117351)
 xcrun altool --notarize-app --primary-bundle-id "org.writecrow.corpustextprocessor" --username "mfullmer@gmail.com" --password "" --file MAC_CorpusTextProcessor.pkg
 
 8. Check notarization
@@ -49,7 +49,7 @@ xcrun altool --notarization-info NNN -u "mfullmer@gmail.com"
 1. Build the executable
 
 ```
-rm -r build; rm -r dist; pyinstaller --onefile -wF --noconsole CorpusTextProcessor.py --icon=default_icon.ico --log-level=WARN
+rm -r build; rm -r dist; pyinstaller --onefile -wF --noconsole CorpusTextProcessor.py --icon=crow.ico --log-level=WARN
 ```
 
 2. Sign the executable

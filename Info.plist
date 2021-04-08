@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>MacOS/Corpus Text Processor</string>
 	<key>CFBundleIconFile</key>
-	<string>default_icon.icns</string>
+	<string>crow.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>CROW</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.2</string>
+	<string>1.0.3</string>
   <key>NSHighResolutionCapable</key>
   <string>True</string>
 </dict>

@@ -3,6 +3,7 @@
 
 # Base imports
 import os
+import base64
 from tabulate import tabulate
 
 import PySimpleGUI as sg
@@ -15,6 +16,10 @@ from processors import remove_pdf_metadata
 
 # Set the 'print' command to use the GUI.
 print = sg.Print
+
+with open("crow.png", "rb") as f:
+    my_icon = base64.b64encode(f.read())
+sg.set_options(icon=my_icon)
 
 # Define the GUI.
 sg.ChangeLookAndFeel('TealMono')

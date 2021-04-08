@@ -13,10 +13,6 @@ from .utils import ShellParser
 
 
 class Parser(ShellParser):
-    def convert_linebreaks (self, match_obj):
-      if match_obj.group() is not None:
-        var = re.sub(r"\n\n", ' ', match_obj.group())
-        return var
 
     def extract(self, filename):
         # convert pdf to docx
@@ -26,11 +22,6 @@ class Parser(ShellParser):
         cv.close()
         output = docx2txt.process(wordfile.name)
 
-        match = re.search('\n\n\n\n', output)
-        if match is not None:
-          output = re.sub('\t{1,}', '\n', output)
-          output = re.sub('.\n\n[^\n]', self.convert_linebreaks, output)
-
         # replace line breaks with <p>
         content = re.sub(r'\n\n+','<p>', output)
         # if <p> is followed by a lower case character
@@ -38,4 +29,8 @@ class Parser(ShellParser):
         content = re.sub(r'<p>([a-z])',r' \g<1>',content)
         # any <p> left is an actual line break
         content = re.sub(r'<p>',r'\n',content)
+
+        # The following line appears to be too greedy
+        #content = re.sub(r'([a-z]) \n', r'\g<1> ', content)
+
         return content
