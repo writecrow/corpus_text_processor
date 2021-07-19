@@ -13,6 +13,7 @@ from parsers import html_parser
 from parsers import pptx_parser
 from parsers import rtf_parser
 from parsers import txt_parser
+from parsers import linebreaks
 
 
 os.environ["PYTHONIOENCODING"] = "utf-8"
@@ -48,8 +49,13 @@ def run(original_file, source, destination, file_name, extension):
         # Extract the text
         if extension != ".doc":
             plaintext = parser.process(original_file, "utf_8")
+
+        if type(plaintext) is not str:
+            plaintext = plaintext.decode('utf-8')
+        # Remove duplicate linebreaks
+            plaintext = linebreaks.remove(plaintext)
         with open(output_filename, "w", encoding="utf-8") as f:
-            f.write(plaintext.decode('utf-8'))
+            f.write(plaintext)
         return {'name': file_name, 'result': True, 'message': 'Success!'}
 
     except:
