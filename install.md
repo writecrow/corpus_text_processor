@@ -24,7 +24,7 @@ codesign -v dist/Corpus\ Text\ Processor.app/
 
 5. Build the .pkg (change version below!)
 ```
-rm -rf Mac/ && mkdir Mac/ && mv dist/Corpus\ Text\ Processor.app Mac/ && pkgbuild --root Mac --identifier "org.writecrow.corpustextprocessor" --version 1.0.3 --install-location /Applications CorpusTextProcessor.pkg && rm -rf build/ dist/ Mac/
+rm -rf Mac/ && mkdir Mac/ && mv dist/Corpus\ Text\ Processor.app Mac/ && pkgbuild --root Mac --identifier "org.writecrow.corpustextprocessor" --version 1.0.4 --install-location /Applications CorpusTextProcessor.pkg && rm -rf build/ dist/ Mac/
 ```
 
 6. Code sign the package (see https://simplemdm.com/certificate-sign-macos-packages/)
