@@ -13,13 +13,13 @@ rm -rf build/ dist/ && pyinstaller --onefile --windowed --noupx --osx-bundle-ide
 
 4. Code sign the app (see https://github.com/pyinstaller/pyinstaller/issues/4629)
 ```
-codesign --deep -vvv -s "Developer ID Application: John Fullmer" --entitlements entitlements.plist -o runtime dist/Corpus\ Text\ Processor.app/ --timestamp
+codesign --force --deep -vvv -s "Developer ID Application: John Fullmer" --entitlements entitlements.plist -o runtime dist/Corpus\ Text\ Processor.app/ --timestamp
 
 ```
 
 5. Verify the code signature (empty output = okay)
 ```
-codesign -v dist/Corpus\ Text\ Processor.app/
+codesign --verify --deep --strict --verbose=2 dist/Corpus\ Text\ Processor.app/
 ```
 
 5. Build the .pkg (change version below!)
