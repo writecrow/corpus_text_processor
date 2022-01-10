@@ -1,0 +1,11 @@
+cff-version: 1.0.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Staples"
+  given-names: "Shelley"
+- family-names: "Dilger"
+  given-names: "Bradley"
+title: "Corpus Text Processor"
+version: 1.0.8
+date-released: 2019-07-09
+url: "https://github.com/writecrow/corpus_text_processor"
