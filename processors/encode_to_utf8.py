@@ -34,6 +34,9 @@ def run(filename, source, destination, name, extension):
         output_filename = os.path.join(output_directory, name)
         if not os.path.exists(output_directory):
             os.makedirs(output_directory)
+        # If the file is empty, move on.
+        if os.stat(filename).st_size == 0:
+            return {'name': name, 'result': False, 'message': 'File is empty'}
         # Open the file so we can guess its encoding.
         rawdata = open(filename, 'rb').read()
         detected = chardet.detect(rawdata)
