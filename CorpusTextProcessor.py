@@ -22,6 +22,10 @@ print = sg.Print
 #     my_icon = base64.b64encode(f.read())
 # sg.set_options(icon=my_icon)
 
+# with open("crow.ico", "rb") as f:
+#     app_icon = base64.b64encode(f.read())
+sg.set_options(icon="crow.ico")
+
 # Define the GUI.
 sg.ChangeLookAndFeel('TealMono')
 layout = [
@@ -67,7 +71,9 @@ def process_recursive(values):
             file_parts = os.path.splitext(filename)
             extension = file_parts[1].lower()
             # Count supported filetypes.
-            if extension in supported_filetypes:
+            if filename == '.DS_Store':
+                processable_files = processable_files
+            elif extension in supported_filetypes:
                 processable_files = processable_files + 1
             else:
                 # Create a list of skipped files
@@ -135,7 +141,7 @@ def process_recursive(values):
         print('*********** ALL FILES SUCCESSFULLY PROCESSED! ************')
     print('**********************************************************')
     print('Success count: ', len(succeeded))
-    print('Failure/skipped count: ', len(failed) + len(skipped_files))
+    print('Skipped count: ', len(failed) + len(skipped_files))
     print('**********************************************************')
 
 
