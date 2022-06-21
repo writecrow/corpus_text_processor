@@ -22,7 +22,10 @@ myLocale = locale.setlocale(category=locale.LC_ALL, locale="")
 
 def run(original_file, source, destination, file_name, extension):
     supported_filetypes = ['.docx', '.html', '.pdf', '.pptx', '.rtf', '.txt']
-    if extension not in supported_filetypes:
+    # If the file is empty, move on.
+    if os.stat(original_file).st_size == 0:
+        return {'name': file_name, 'result': False, 'message': 'File is empty'}
+    elif extension not in supported_filetypes:
         return {'name': file_name, 'result': False, 'message': 'Unsupported file type'}
     try:
         filepath = os.path.dirname(original_file)
