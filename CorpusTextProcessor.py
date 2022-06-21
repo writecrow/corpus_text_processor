@@ -17,11 +17,6 @@ from processors import remove_pdf_metadata
 # Set the 'print' command to use the GUI.
 print = sg.Print
 
-## Windows only !!! ##
-# with open("crow.png", "rb") as f:
-#     my_icon = base64.b64encode(f.read())
-# sg.set_options(icon=my_icon)
-
 # with open("crow.ico", "rb") as f:
 #     app_icon = base64.b64encode(f.read())
 sg.set_options(icon="crow.ico")
