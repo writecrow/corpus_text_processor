@@ -52,4 +52,6 @@ def get_encoding(argument):
             encoding = 'utf-16'
         elif prefix == 'UTF-32':
             encoding = 'utf_32'
+    if not encoding:
+        encoding = argument
     return encoding
