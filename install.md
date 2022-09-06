@@ -91,7 +91,13 @@ xcrun altool --notarize-app --primary-bundle-id "org.writecrow.corpustextprocess
 ```
 
 8. Check notarization
+
+```
 xcrun altool --notarization-history 0 --username "mfullmer@gmail.com" --password ""
+```
 
 9. Get failed notification debug URL:
+
+```
 xcrun altool --notarization-info NNN -u "mfullmer@gmail.com"
+```
