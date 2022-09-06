@@ -13,7 +13,7 @@ import string
 import sys
 
 
-def run(original_file, source, destination, file_name, extension):
+def run(original_file, source, destination, file_name, extension, values):
     if extension not in ['.html', '.txt', '.xml']:
         return {'name': file_name, 'result': False, 'message': 'Not a .txt file'}
     rawdata = open(original_file, 'rb').read()
@@ -95,10 +95,11 @@ def run(original_file, source, destination, file_name, extension):
                 line = re.sub(r'[ÇĆĈĊČ]', 'C', line)
                 line = re.sub(r'ñ', 'n', line)
                 line = re.sub(r'Ñ', 'N', line)
-                # use a regular expression to find non-english characters and
-                # replace them with space
-                # capture any name that is written in different scripts
-                line = re.sub(r'[^\x00-\x7F]+', ' ', line)
+                if values['removeNonEnglish'] is not False:
+                    # use a regular expression to find non-english characters and
+                    # replace them with space
+                    # capture any name that is written in different scripts
+                    line = re.sub(r'[^\x00-\x7F]+', ' ', line)
                 # get rid of weird line breaks (this does not seem to be working)
                 line = re.sub(r'([a-z]+)\s*\n\s*([a-z]+)', '\g<1> \g<2>', line)
                 # get rid of all double spaces
