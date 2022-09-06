@@ -1,5 +1,7 @@
 ## To build for MacOS:
 
+Here
+
 1. Read first: 'Make sure everything is packaged correctly'
 https://github.com/pyinstaller/pyinstaller/wiki/How-to-Report-Bugs#make-sure-everything-is-packaged-correctly
 
