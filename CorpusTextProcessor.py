@@ -42,7 +42,7 @@ layout = [
     [sg.ProgressBar(max_value=10, orientation='h', size=(80, 20), key='progress')],
     [sg.Text('', size=(80, 1), key='result_text')],
     [sg.Text('', size=(80, 1), key='progress_text')],
-    [sg.Text('Version 1.0.10 (Sep 2022)', size=(22, 1))],
+    [sg.Text('Version 1.0.11 (Sept 2022)', size=(22, 1))],
 ]
 window = sg.Window('Corpus Text Processor', keep_on_top=False, font=("Helvetica", 14), default_element_size=(50, 1)).Layout(layout)
 progress_bar = window['progress']
