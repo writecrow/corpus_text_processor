@@ -24,7 +24,7 @@ def decode(filename, encoding_method):
     return {'file': f.read(), 'encoding': 'latin_1'}
 
 
-def run(filename, source, destination, name, extension):
+def run(filename, source, destination, name, extension, values):
     if extension not in ['.html', '.txt', '.xml']:
         return {'name': name, 'result': False, 'message': 'Not a .txt file'}
     try:

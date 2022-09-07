@@ -8,7 +8,7 @@ import os
 import sys
 
 
-def run(original_file, source, destination, file_name, extension):
+def run(original_file, source, destination, file_name, extension, values):
     if extension != ".pdf":
         return {'name': file_name, 'result': False, 'message': 'Not a PDF'}
     filepath = os.path.dirname(original_file)

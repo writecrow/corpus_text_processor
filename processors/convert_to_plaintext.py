@@ -20,7 +20,7 @@ os.environ["PYTHONIOENCODING"] = "utf-8"
 myLocale = locale.setlocale(category=locale.LC_ALL, locale="")
 
 
-def run(original_file, source, destination, file_name, extension):
+def run(original_file, source, destination, file_name, extension, values):
     supported_filetypes = ['.docx', '.html', '.pdf', '.pptx', '.rtf', '.txt']
     # If the file is empty, move on.
     if os.stat(original_file).st_size == 0:

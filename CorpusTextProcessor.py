@@ -33,8 +33,9 @@ layout = [
               "Processors", key='convertToPlaintext', default=True)],
     [sg.Radio("Encode in UTF-8 (expects .txt files)",
               "Processors", key='encodeUtf8', default=False)],
-    [sg.Radio("Standardize non-ASCII characters and remove non-English characters (expects UTF-8 encoded input)",
+    [sg.Radio("Standardize non-ASCII characters (expects UTF-8 encoded input)",
               "Processors", key='standardizeCharacters', default=False)],
+    [sg.T("                   "), sg.Checkbox('Remove non-English characters during standardization', default=True, key="removeNonEnglish")],
     [sg.Radio("Remove PDF metadata (i.e., authoring information). Expects .pdf files.",
               "Processors", key='removeMetadata', default=False)],
     [sg.Button("Process files", size=(20, 1)), sg.Exit(size=(6, 1))],
@@ -98,7 +99,7 @@ def process_recursive(values):
                 processor = standardize_characters
             elif values['removeMetadata'] is True:
                 processor = remove_pdf_metadata
-            result = processor.run(filepath, source, destination, filename, extension)
+            result = processor.run(filepath, source, destination, filename, extension, values)
             resultList.append(result)
 
             # Update the progress in the GUI.
