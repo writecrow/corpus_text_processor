@@ -9,13 +9,16 @@ import re
 import shutil
 import string
 import sys
+import difflib
+import filecmp
 
 ## printf "Using the Cambridge learner corpus\r\nGiven the nature of TaLC" | tee crlf_ending.txt
 
-
-with codecs.open('crlf_ending.txt', 'r', encoding="cp1252") as f:
+input_filename = 'mixed-linebreaks.txt'
+output_filename = "output.txt"
+with codecs.open(input_filename, 'r', encoding="utf-8") as f:
         try:
-            output_file = open("output.txt", "w")
+            output_file = open(output_filename, "w")
             # for each line in this file
             for line in f:
                 # replace tabs with <tab>
@@ -58,7 +61,7 @@ with codecs.open('crlf_ending.txt', 'r', encoding="cp1252") as f:
                 line = re.sub(r'([,;:])([a-z][a-z]+)', '\g<1> \g<2>', line)
                 line = re.sub(r'([a-z])([A-Z])', '\g<1> \g<2>', line)
                 line = re.sub(r'([\.\?;:])([0-9]+\s+)', '\g<1> \g<2>', line)
-                # line = re.sub(r'\r',' ', line)
+                line = re.sub(r'\r\n',' ', line)
                 line = re.sub(r'([a-z])(\n[A-Z])', '\g<1>. \g<2>', line)
                 # flatten diacritics
                 line = re.sub(r'[áàãäâåāăąǎȃȧ]', 'a', line)
@@ -93,8 +96,11 @@ with codecs.open('crlf_ending.txt', 'r', encoding="cp1252") as f:
                 line = line.strip()
                 # re-add tab
                 line = re.sub(r'<tab>', '\t', line)
-                print(line)
-                output_file.write(line + "\r\n")
+                line = re.sub(r'\r?\n', r'\n', line)
+                print(line, file = output_file)
+                    # output_file.write(line + os.linesep)
         except:
             message = str(sys.exc_info()[1])
             print(message)
+        output_file = open(output_filename, "r")
+        print(output_file.read());
