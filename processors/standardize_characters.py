@@ -110,8 +110,9 @@ def run(original_file, source, destination, file_name, extension, values):
                 # re-add tab
                 line = re.sub(r'<tab>', '\t', line)
                 # write our text in the file
-                output_file.write(line + "\r\n")
-                #print(line, file=output_file)
+                # output_file.write(line + "\r\n")
+                # Render via print() for operating system consistency (line breaks).
+                print(line, file=output_file)
             # be polite and close the file
             output_file.close()
             return {'name': file_name, 'result': True, 'message': 'Successfully standardized.'}
