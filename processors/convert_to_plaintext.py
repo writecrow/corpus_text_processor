@@ -55,7 +55,8 @@ def run(original_file, source, destination, file_name, extension, values):
 
         if type(plaintext) is not str:
             plaintext = plaintext.decode('utf-8')
-        # Remove duplicate linebreaks
+        if values['removeLinebreaks'] is not False:
+            # Remove duplicate linebreaks
             plaintext = linebreaks.remove(plaintext)
         with open(output_filename, "w", encoding="utf-8") as f:
             f.write(plaintext)
