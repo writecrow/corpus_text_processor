@@ -30,7 +30,7 @@ def run(original_file, source, destination, file_name, extension, values):
             if not os.path.exists(output_directory):
                 os.makedirs(output_directory)
             # create a new file with that name, "w" is for writable
-            output_file = open(output_filename, "w")
+            output_file = open(output_filename, "w", encoding="utf-8")
             # for each line in this file
             for line in f:
                 # replace tabs with <tab>
