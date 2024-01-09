@@ -77,7 +77,7 @@ Once the files have been processed (after each processing step), inspect documen
 - Converting files of type `.doc` to plaintext is not currently supported. We recommend using a batch utility to convert `.doc` files to `.docx` format, which this application can convert. Here are recommended utilities for converting `.doc` files:
   * **MacOS**: the built-in `textutil` utility can do this. See the tutorial at https://www.chriswrites.com/convert-txt-rtf-doc-and-docx-files-with-textutil/
   * **Windows**: Zilla word-to-text is a free application. Download at https://download.cnet.com/Zilla-Word-To-Text-Converter/3000-2079_4-75118863.html
-- Currently the program only works with English. We have plans for developing a tool that will work with Portuguese and Russian in the future.
+
 
 ## Video presentation
 
